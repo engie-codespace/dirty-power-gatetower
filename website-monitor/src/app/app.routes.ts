@@ -3,7 +3,7 @@ import { GridDisplay } from './components/grid-display/grid-display';
 import { Settings } from './components/settings/settings';
 
 export const routes: Routes = [
-  { path: '', component: GridDisplay },
+  { path: '', component: GridDisplay, pathMatch: 'full' },
   { path: 'settings', component: Settings },
   { path: '**', redirectTo: '' } // Redirect any unknown routes to home
 ];

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -11,7 +11,7 @@ import { Subscription, interval } from 'rxjs';
 @Component({
   selector: 'app-website-frame',
   standalone: true,
-  imports: [NgIf, MatCardModule, MatProgressBarModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatProgressBarModule, MatIconModule, MatButtonModule],
   templateUrl: './website-frame.html',
   styleUrl: './website-frame.scss'
 })
@@ -34,6 +34,10 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
   ) {}
   
   ngOnInit(): void {
+    if (!this.website) {
+      console.error('No website data provided to WebsiteFrame'); // Keep error log
+      return;
+    }
     this.updateUrl();
     this.startRefreshTimer();
     this.startProgressTimer();

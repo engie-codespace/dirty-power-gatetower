@@ -22,10 +22,22 @@ export class WebsiteService {
   private websitesSubject = new BehaviorSubject<Website[]>(this.loadWebsites());
   private globalRefreshIntervalSubject = new BehaviorSubject<number>(this.loadGlobalRefreshInterval());
 
-  constructor() { }
+  constructor() {
+    console.log('WebsiteService initializing');
+    // Make sure we have initial data
+    const initialWebsites = this.loadWebsites();
+    console.log('Initial websites loaded:', initialWebsites);
+    if (initialWebsites.length === 0) {
+      console.log('No websites found in storage, using defaults');
+      this.saveWebsites(this.defaultWebsites);
+      this.websitesSubject.next(this.defaultWebsites);
+    }
+  }
 
   // Get all websites
   getWebsites(): Observable<Website[]> {
+    const websites = this.websitesSubject.getValue();
+    console.log('getWebsites called, current websites:', websites);
     return this.websitesSubject.asObservable();
   }
 
