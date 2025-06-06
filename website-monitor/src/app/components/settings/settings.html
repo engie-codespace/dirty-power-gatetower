@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<div class="settings-container">
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Global Settings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="global-refresh-settings">
+        <mat-form-field class="full-width">
+          <mat-label>Global Refresh Interval (seconds)</mat-label>
+          <input matInput type="number" [(ngModel)]="globalRefreshInterval" min="5">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="updateGlobalRefreshInterval()">Update Global Interval</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Add New Website</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="newWebsiteForm" (ngSubmit)="addWebsite()">
+        <div class="form-row">
+          <mat-form-field class="full-width">
+            <mat-label>Website Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter a name for the website">
+            <mat-error *ngIf="newWebsiteForm.get('name')?.hasError('required')">
+              Name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="full-width">
+            <mat-label>Website URL</mat-label>
+            <input matInput formControlName="url" placeholder="https://example.com">
+            <mat-error *ngIf="newWebsiteForm.get('url')?.hasError('required')">
+              URL is required
+            </mat-error>
+            <mat-error *ngIf="newWebsiteForm.get('url')?.hasError('pattern')">
+              Please enter a valid URL (starts with http:// or https://)
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="full-width">
+            <mat-label>Refresh Interval (seconds)</mat-label>
+            <input matInput type="number" formControlName="refreshInterval" min="5">
+            <mat-error *ngIf="newWebsiteForm.get('refreshInterval')?.hasError('required')">
+              Refresh interval is required
+            </mat-error>
+            <mat-error *ngIf="newWebsiteForm.get('refreshInterval')?.hasError('min')">
+              Refresh interval should be at least 5 seconds
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-slide-toggle formControlName="active">Active</mat-slide-toggle>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!newWebsiteForm.valid">
+            Add Website
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>Manage Websites</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let website of websites" class="website-list-item">
+          <div class="website-list-content">
+            <div class="website-info">
+              <h3>{{ website.name }}</h3>
+              <p>{{ website.url }}</p>
+              <p>Refresh: {{ website.refreshInterval }} seconds</p>
+            </div>
+            <div class="website-actions">
+              <mat-slide-toggle 
+                [checked]="website.active" 
+                (change)="toggleWebsiteActive(website)">
+                {{ website.active ? 'Active' : 'Inactive' }}
+              </mat-slide-toggle>
+              <button mat-icon-button color="warn" (click)="deleteWebsite(website.id)" aria-label="Delete website">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="back-button-container">
+    <button mat-raised-button color="accent" routerLink="/">
+      Back to Monitor
+    </button>
+  </div>
+</div>

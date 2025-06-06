@@ -1,0 +1,5 @@
+<div class="grid-container">
+  <div *ngFor="let website of websites" class="grid-item">
+    <app-website-frame [website]="website" [globalRefreshInterval]="globalRefreshInterval"></app-website-frame>
+  </div>
+</div>
