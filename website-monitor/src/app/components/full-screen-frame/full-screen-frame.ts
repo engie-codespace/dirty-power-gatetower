@@ -59,6 +59,12 @@ import { WebsiteFrame } from '../website-frame/website-frame';
     .full-screen-frame {
       display: block;
       height: 100%;
+
+      ::ng-deep .iframe-container iframe {
+        width: 100% !important;
+        height: 100% !important;
+        transform: none !important;
+      }
     }
 
     :host {

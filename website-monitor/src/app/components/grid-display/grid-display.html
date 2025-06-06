@@ -1,6 +1,10 @@
 <div *ngIf="websites.length > 0" class="grid-container">
-  <div *ngFor="let website of websites" class="grid-item" (click)="showFullScreen(website)">
-    <app-website-frame [website]="website" [globalRefreshInterval]="globalRefreshInterval"></app-website-frame>
+  <div *ngFor="let website of websites" class="grid-item">
+    <app-website-frame 
+      [website]="website" 
+      [globalRefreshInterval]="globalRefreshInterval"
+      (toggleFullScreen)="showFullScreen(website)">
+    </app-website-frame>
   </div>
 </div>
 

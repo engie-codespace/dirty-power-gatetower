@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
@@ -18,6 +18,7 @@ import { Subscription, interval } from 'rxjs';
 export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
   @Input() website!: Website;
   @Input() globalRefreshInterval: number = 60;
+  @Output() toggleFullScreen = new EventEmitter<void>();
 
   @ViewChild('frame') frameElement!: ElementRef;
   
@@ -98,5 +99,9 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
     } else {
       return `${Math.floor(interval / 60)}m ${interval % 60}s`;
     }
+  }
+  
+  onCardClick(): void {
+    this.toggleFullScreen.emit();
   }
 }

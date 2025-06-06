@@ -21,8 +21,7 @@ export class GridDisplay implements OnInit, OnDestroy {
   private websitesSubscription?: Subscription;
   private refreshIntervalSubscription?: Subscription;
   
-  constructor(private websiteService: WebsiteService) {
-  }
+  constructor(private websiteService: WebsiteService) {}
 
   showFullScreen(website: Website): void {
     this.fullScreenWebsite = website;
@@ -33,7 +32,6 @@ export class GridDisplay implements OnInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    
     this.websitesSubscription = this.websiteService.getWebsites().subscribe({
       next: (websites) => {
         this.websites = websites.filter(website => website.active);

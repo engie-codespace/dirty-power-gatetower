@@ -1,9 +1,9 @@
 <div class="website-frame-container">
-  <mat-card class="website-card">
+  <mat-card class="website-card" (click)="onCardClick()">
     <mat-card-header>
       <div class="website-header">
         <span class="website-title">{{ website.name }}</span>
-        <button mat-icon-button (click)="refreshWebsite()" aria-label="Refresh website">
+        <button mat-icon-button (click)="refreshWebsite(); $event.stopPropagation()" aria-label="Refresh website">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>
