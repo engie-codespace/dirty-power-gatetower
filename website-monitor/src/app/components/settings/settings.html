@@ -11,7 +11,10 @@
           <mat-label>Global Refresh Interval (seconds)</mat-label>
           <input matInput type="number" [(ngModel)]="globalRefreshInterval" min="5">
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="updateGlobalRefreshInterval()">Update Global Interval</button>
+        <div class="button-row">
+          <button mat-raised-button color="primary" (click)="updateGlobalRefreshInterval()">Update Global Interval</button>
+          <button mat-raised-button color="warn" (click)="resetSettingsToDefaults()">Reset All To Defaults</button>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

@@ -1,24 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Website } from '../models/website.model';
+import { APP_SETTINGS } from '../config/app-settings.config'; // Import new config
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsiteService {
-  // Default websites with sample URLs
-  private defaultWebsites: Website[] = [
-    { id: 1, name: 'Sample 1', url: 'https://example.com', refreshInterval: 60, active: true },
-    { id: 2, name: 'Sample 2', url: 'https://example.org', refreshInterval: 60, active: true },
-    { id: 3, name: 'Sample 3', url: 'https://example.net', refreshInterval: 60, active: true },
-    { id: 4, name: 'Sample 4', url: 'https://example.edu', refreshInterval: 60, active: true },
-    { id: 5, name: 'Sample 5', url: 'https://example.co.uk', refreshInterval: 60, active: true },
-    { id: 6, name: 'Sample 6', url: 'https://example.io', refreshInterval: 60, active: true },
-    { id: 7, name: 'Sample 7', url: 'https://example.dev', refreshInterval: 60, active: true },
-    { id: 8, name: 'Sample 8', url: 'https://example.tech', refreshInterval: 60, active: true },
-  ];
+  // Use defaults from APP_SETTINGS
+  private defaultWebsites: Website[] = APP_SETTINGS.defaultWebsites;
+  private globalRefreshInterval = APP_SETTINGS.defaultGlobalRefreshInterval;
 
-  private globalRefreshInterval = 60; // Default global refresh interval in seconds
   private websitesSubject = new BehaviorSubject<Website[]>(this.loadWebsites());
   private globalRefreshIntervalSubject = new BehaviorSubject<number>(this.loadGlobalRefreshInterval());
 
@@ -118,5 +110,15 @@ export class WebsiteService {
   private loadGlobalRefreshInterval(): number {
     const storedInterval = localStorage.getItem('globalRefreshInterval');
     return storedInterval ? parseInt(storedInterval, 10) : this.globalRefreshInterval;
+  }
+
+  // Reset all settings to their default values from the configuration file
+  resetToDefaultSettings(): void {
+    localStorage.removeItem('websites');
+    localStorage.removeItem('globalRefreshInterval');
+
+    // Re-initialize subjects with default values, which will also update local storage via loadWebsites/loadGlobalRefreshInterval
+    this.websitesSubject.next(this.loadWebsites()); 
+    this.globalRefreshIntervalSubject.next(this.loadGlobalRefreshInterval());
   }
 }

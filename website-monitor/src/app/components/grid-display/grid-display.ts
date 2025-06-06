@@ -4,22 +4,32 @@ import { Subscription } from 'rxjs';
 import { WebsiteService } from '../../services/website.service';
 import { Website } from '../../models/website.model';
 import { WebsiteFrame } from '../website-frame/website-frame';
+import { FullScreenFrame } from '../full-screen-frame/full-screen-frame';
 
 @Component({
   selector: 'app-grid-display',
   standalone: true,
-  imports: [CommonModule, WebsiteFrame],
+  imports: [CommonModule, WebsiteFrame, FullScreenFrame],
   templateUrl: './grid-display.html',
   styleUrl: './grid-display.scss'
 })
 export class GridDisplay implements OnInit, OnDestroy {
   websites: Website[] = [];
   globalRefreshInterval: number = 60;
+  fullScreenWebsite: Website | null = null;
   
   private websitesSubscription?: Subscription;
   private refreshIntervalSubscription?: Subscription;
   
   constructor(private websiteService: WebsiteService) {
+  }
+
+  showFullScreen(website: Website): void {
+    this.fullScreenWebsite = website;
+  }
+
+  closeFullScreen(): void {
+    this.fullScreenWebsite = null;
   }
   
   ngOnInit(): void {

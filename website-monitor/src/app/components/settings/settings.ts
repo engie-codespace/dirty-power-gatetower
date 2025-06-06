@@ -94,4 +94,14 @@ export class Settings implements OnInit {
     website.active = !website.active;
     this.updateWebsite(website);
   }
+
+  resetSettingsToDefaults(): void {
+    if (confirm('Are you sure you want to reset all settings to their default values? This action cannot be undone.')) {
+      this.websiteService.resetToDefaultSettings();
+      // Optionally, force a reload or re-initialize component data if needed
+      this.loadWebsites(); 
+      this.loadGlobalRefreshInterval();
+      this.snackBar.open('Settings have been reset to defaults.', 'Close', { duration: 3000 });
+    }
+  }
 }

@@ -77,6 +77,16 @@
   justify-content: center;
 }
 
+.button-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.button-row button {
+  flex: 1;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
   .website-list-content {
