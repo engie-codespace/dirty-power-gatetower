@@ -18,6 +18,7 @@ import { Subscription, interval } from 'rxjs';
 export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
   @Input() website!: Website;
   @Input() globalRefreshInterval: number = 60;
+  @Input() isFullScreen: boolean = false;  // Add this line
   @Output() toggleFullScreen = new EventEmitter<void>();
 
   @ViewChild('frame') frameElement!: ElementRef;
@@ -51,6 +52,41 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
         this.cdr.detectChanges();
       };
     }
+    
+    // Apply direct DOM style updates for fullscreen mode
+    this.updateFullscreenStyles();
+  }
+  
+  private updateFullscreenStyles(): void {
+    // Wait for DOM to be ready
+    setTimeout(() => {
+      if (this.isFullScreen && this.frameElement?.nativeElement) {
+        // Direct style application for maximum compatibility
+        const iframe = this.frameElement.nativeElement;
+        iframe.style.pointerEvents = 'auto';
+        iframe.style.position = 'relative';
+        iframe.style.transform = 'none';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        
+        // Fix container
+        const container = iframe.parentElement;
+        if (container) {
+          container.style.pointerEvents = 'auto';
+          container.style.overflow = 'auto';
+          container.style.height = '100%';
+        }
+        
+        // Fix card if needed
+        const card = container?.parentElement?.parentElement;
+        if (card) {
+          card.style.cursor = 'default';
+          card.style.overflow = 'auto';
+        }
+        
+        this.cdr.detectChanges();
+      }
+    }, 0);
   }
   
   ngOnDestroy(): void {
@@ -102,6 +138,8 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
   }
   
   onCardClick(): void {
-    this.toggleFullScreen.emit();
+    if (!this.isFullScreen) {
+      this.toggleFullScreen.emit();
+    }
   }
 }

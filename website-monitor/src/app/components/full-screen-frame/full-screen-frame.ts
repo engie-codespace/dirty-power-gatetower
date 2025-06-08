@@ -9,6 +9,7 @@ import { WebsiteFrame } from '../website-frame/website-frame';
   selector: 'app-full-screen-frame',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, WebsiteFrame],
+  styleUrls: ['./fullscreen-fix.css'],
   template: `
     <div class="full-screen-overlay">
       <div class="full-screen-content">
@@ -18,7 +19,8 @@ import { WebsiteFrame } from '../website-frame/website-frame';
         <app-website-frame 
           [website]="website" 
           [globalRefreshInterval]="globalRefreshInterval"
-          class="full-screen-frame">
+          [isFullScreen]="true"
+          class="full-screen-frame fullscreen-iframe-fix">
         </app-website-frame>
       </div>
     </div>
@@ -44,7 +46,7 @@ import { WebsiteFrame } from '../website-frame/website-frame';
       height: 100%;
       background: white;
       border-radius: 8px;
-      overflow: hidden;
+      overflow: auto;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     }
 
@@ -58,12 +60,34 @@ import { WebsiteFrame } from '../website-frame/website-frame';
 
     .full-screen-frame {
       display: block;
-      height: 100%;
+      height: calc(100% - 32px);
+      margin: 16px;
+      width: calc(100% - 32px);
+      position: relative;
 
-      ::ng-deep .iframe-container iframe {
-        width: 100% !important;
-        height: 100% !important;
-        transform: none !important;
+      ::ng-deep {
+        .website-frame-container {
+          height: 100%;
+        }
+
+        .website-card {
+          height: 100%;
+          width: 100%;
+          cursor: default;
+        }
+
+        .iframe-container {
+          height: 100%;
+          pointer-events: auto !important;
+          
+          iframe {
+            width: 100% !important;
+            height: 100% !important;
+            transform: none !important;
+            position: relative !important;
+            pointer-events: auto !important;
+          }
+        }
       }
     }
 

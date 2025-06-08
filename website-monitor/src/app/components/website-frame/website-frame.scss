@@ -14,9 +14,17 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   cursor: pointer;
 
-  &:hover {
+  &:hover:not(.fullscreen) {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &.fullscreen {
+    cursor: default;
+    
+    .iframe-container {
+      pointer-events: auto;
+    }
   }
 }
 
@@ -55,8 +63,18 @@
     &.loading {
       opacity: 0.6;
     }
-
-    iframe {
+    
+    &.fullscreen-active {
+      pointer-events: auto !important;
+      
+      iframe {
+        pointer-events: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        position: relative !important;
+      }
+    }      iframe {
       width: 1920px;
       height: 1080px;
       border: none;
@@ -66,7 +84,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      pointer-events: none;
+      pointer-events: none; // Disable pointer events in regular view
       transition: transform 0.3s ease-in-out;
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
@@ -75,14 +93,8 @@
     }
   }
 
-  &.fullscreen {
-    .iframe-container iframe {
-      transform: none;
-      width: 100%;
-      height: 100%;
-      pointer-events: auto; // Re-enable interaction in fullscreen mode
-    }
-  }
+  // This isn't getting applied because the class is on the card, not the content
+  // We'll use a different approach
 }
 
 .refresh-progress-container {

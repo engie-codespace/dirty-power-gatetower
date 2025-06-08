@@ -1,5 +1,5 @@
 <div class="website-frame-container">
-  <mat-card class="website-card" (click)="onCardClick()">
+  <mat-card class="website-card" [class.fullscreen]="isFullScreen" (click)="onCardClick()">
     <mat-card-header>
       <div class="website-header">
         <span class="website-title">{{ website.name }}</span>
@@ -11,7 +11,10 @@
     
     <mat-card-content class="frame-content">
       <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-      <div class="iframe-container" [class.loading]="loading">
+      <div class="iframe-container" 
+           [class.loading]="loading" 
+           [class.fullscreen-iframe-fix]="isFullScreen"
+           [class.fullscreen-active]="isFullScreen">
         <iframe #frame [src]="safeUrl" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </mat-card-content>

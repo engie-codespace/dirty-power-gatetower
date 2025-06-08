@@ -1,0 +1,26 @@
+/* 
+This CSS overrides the styles for the fullscreen iframe to ensure 
+clicks work properly within the iframe when in fullscreen mode.
+*/
+
+.fullscreen-iframe-fix {
+  pointer-events: auto !important;
+}
+
+.fullscreen-iframe-fix iframe {
+  pointer-events: auto !important;
+}
+
+/* Fix for mat-card in fullscreen mode */
+.mat-mdc-card.fullscreen {
+  cursor: auto !important;
+}
+
+.mat-mdc-card.fullscreen .mat-mdc-card-content {
+  overflow: auto !important;
+}
+
+/* Override any potential pointer-events interference */
+.iframe-container.fullscreen-active {
+  pointer-events: auto !important;
+}
