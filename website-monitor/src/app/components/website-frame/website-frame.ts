@@ -29,6 +29,7 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
   refreshProgress: number = 0;
   refreshSubscription?: Subscription;
   progressSubscription?: Subscription;
+  timeLeft: number = 0; // seconds left until next refresh
   
   constructor(
     private sanitizer: DomSanitizer,
@@ -99,6 +100,7 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
     this.loading = true;
     this.lastRefreshTime = new Date();
     this.refreshProgress = 0;
+    this.timeLeft = this.getRefreshInterval();
   }
   
   refreshWebsite(): void {
@@ -118,14 +120,24 @@ export class WebsiteFrame implements OnInit, OnDestroy, AfterViewInit {
   
   startProgressTimer(): void {
     this.progressSubscription?.unsubscribe();
-    
-    this.progressSubscription = interval(100).subscribe(() => {
-      const refreshInterval = this.website.refreshInterval || this.globalRefreshInterval;
+    this.progressSubscription = interval(1000).subscribe(() => {
+      const refreshInterval = this.getRefreshInterval();
       if (refreshInterval > 0) {
         const elapsedMs = Date.now() - this.lastRefreshTime.getTime();
         this.refreshProgress = (elapsedMs / (refreshInterval * 1000)) * 100;
+        this.timeLeft = Math.max(0, refreshInterval - Math.floor(elapsedMs / 1000));
       }
     });
+  }
+
+  getRefreshInterval(): number {
+    return this.website.refreshInterval || this.globalRefreshInterval;
+  }
+
+  get timeLeftDisplay(): string {
+    const min = Math.floor(this.timeLeft / 60);
+    const sec = this.timeLeft % 60;
+    return `${min}m ${sec}s`;
   }
   
   get effectiveRefreshInterval(): string {

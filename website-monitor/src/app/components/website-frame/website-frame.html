@@ -22,7 +22,7 @@
     <div class="refresh-progress-container">
       <mat-progress-bar mode="determinate" [value]="refreshProgress"></mat-progress-bar>
       <div class="refresh-info">
-        <span>Next refresh: {{ effectiveRefreshInterval }}</span>
+        <span>Next refresh in: {{ timeLeftDisplay }}</span>
       </div>
     </div>
   </mat-card>
